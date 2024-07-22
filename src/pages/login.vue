@@ -13,8 +13,8 @@
                 <span class="text-gray-300 font-bold text-1xl">账号密码登录</span>
                 <span class="text-gray-200 ml-2">—————</span>
             </div>
-            <el-form :model="form" class=" w-[250px]">
-                <el-form-item>
+            <el-form ref="formRef" :model="form" :rules="rules" class=" w-[250px]">
+                <el-form-item prop="username">
                     <el-input v-model="form.username" placeholder="请输入用户名">
                         <template #prefix>
                             <el-icon>
@@ -23,7 +23,7 @@
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item prop="password">
                     <el-input v-model="form.password" placeholder="请输入密码">
                         <template #prefix>
                             <el-icon>
@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { ref, reactive } from 'vue'
 
 // do not use same name with ref
 const form = reactive({
@@ -50,7 +50,25 @@ const form = reactive({
     password: ""
 })
 
+
+
+const rules = {
+    username: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { min: 3, max: 5, message: '用户名必须是3到5个字符', trigger: 'blur' },
+    ],
+    password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 5, max: 12, message: '用户名必须是5到12个字符', trigger: 'blur' },
+    ]
+}
+
+
+const formRef = ref(null)
 const onSubmit = () => {
-    console.log('submit!')
+    formRef.value.validate((valid) => {
+        if (!valid) return false;
+        else console.log('验证通过')
+    })
 }
 </script>
