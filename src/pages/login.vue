@@ -46,6 +46,10 @@ import { ref, reactive } from 'vue'
 import { login } from '~/api/manager.js'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router';
+import { useCookies } from '@vueuse/integrations/useCookies';
+
+const cookies = useCookies();
+
 // do not use same name with ref
 const form = reactive({
     username: "",
@@ -77,6 +81,7 @@ const onSubmit = () => {
                     type: 'success',
                 })
                 router.push('/')
+                cookies.set('admin-token', res.data.data.token)
             })
             .catch(err => {
 
