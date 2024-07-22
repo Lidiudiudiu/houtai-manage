@@ -1,12 +1,12 @@
 <template>
-    <el-row class="min-h-screen transition-all">
-        <el-col :lg="16" :md="12" class="flex justify-center items-center bg-purple-600">
+    <el-row>
+        <el-col :span="16" class="flex justify-center items-center min-h-screen bg-purple-600">
             <div>
                 <div class=" text-5xl text-light-50 font-bold mb-10">欢迎光临</div>
                 <div class=" text-gray-400">此站点是演示地址，<span class="text-light-200 font-bold">点击立即学习</span></div>
             </div>
         </el-col>
-        <el-col :lg="8" :md="12" class="flex justify-center items-center  flex-col bg-light-200">
+        <el-col :span="8" class="flex justify-center items-center min-h-screen flex-col bg-light-200">
             <div class=" text-3xl mb-4 font-bold">欢迎回来</div>
             <div class="mb-4">
                 <span class="text-gray-200 mr-2">—————</span>
