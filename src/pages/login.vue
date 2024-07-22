@@ -43,14 +43,16 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-
+import { login } from '~/api/manager.js'
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router';
 // do not use same name with ref
 const form = reactive({
     username: "",
     password: ""
 })
 
-
+const router = useRouter()
 
 const rules = {
     username: [
@@ -68,7 +70,21 @@ const formRef = ref(null)
 const onSubmit = () => {
     formRef.value.validate((valid) => {
         if (!valid) return false;
-        else console.log('验证通过')
+        login(form.username, form.password)
+            .then(res => {
+                ElMessage({
+                    message: '登录成功',
+                    type: 'success',
+                })
+                router.push('/')
+            })
+            .catch(err => {
+
+                ElMessage({
+                    message: err.response.data.msg,
+                    type: 'error',
+                })
+            })
     })
 }
 </script>
