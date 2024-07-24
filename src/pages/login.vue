@@ -34,7 +34,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button round type="primary" @click="onSubmit"
-                        class="w-[250px] bg-purple-500 hover:bg-purple-400">登录</el-button>
+                        class="w-[250px] bg-purple-500 hover:bg-purple-400" :loading="loading">登录</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -71,9 +71,11 @@ const rules = {
 
 
 const formRef = ref(null)
+const loading = ref(false)
 const onSubmit = () => {
     formRef.value.validate((valid) => {
         if (!valid) return false;
+        loading.value = true
         login(form.username, form.password)
             .then(res => {
                 ElMessage({
@@ -82,6 +84,9 @@ const onSubmit = () => {
                 })
                 router.push('/')
                 cookies.set('admin-token', res.token)
+            })
+            .finally(() => {
+                loading.value = false;
             })
         getinfo().then(res2 => {
             console.log(res2)
