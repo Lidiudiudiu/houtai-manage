@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ElMessage } from 'element-plus'
-import { useCookies } from "@vueuse/integrations/useCookies";
+import { toast } from '~/composables/util.js'
+import { getcookies } from '~/composables/auth';
 const instance = axios.create({
     baseURL: '/api',
 });
@@ -9,8 +9,7 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
-    const cookies = useCookies();
-    const token = cookies.get('admin-token')
+    const token = getcookies()
     if (token) {
         config.headers['token'] = token
     }
@@ -28,10 +27,8 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    ElMessage({
-        message: error.response.data.msg,
-        type: 'error',
-    })
+    toast(error.response.data.msg, 'error')
+
     return Promise.reject(error);
 });
 

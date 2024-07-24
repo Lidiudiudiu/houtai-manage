@@ -44,11 +44,10 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { login, getinfo } from '~/api/manager.js'
-import { ElMessage } from 'element-plus'
+import { toast } from '~/composables/util.js'
 import { useRouter } from 'vue-router';
-import { useCookies } from '@vueuse/integrations/useCookies';
+import { setcookies } from '~/composables/auth.js';
 
-const cookies = useCookies();
 
 // do not use same name with ref
 const form = reactive({
@@ -78,12 +77,9 @@ const onSubmit = () => {
         loading.value = true
         login(form.username, form.password)
             .then(res => {
-                ElMessage({
-                    message: '登录成功',
-                    type: 'success',
-                })
+                toast('登录成功')
                 router.push('/')
-                cookies.set('admin-token', res.token)
+                setcookies(res.token)
             })
             .finally(() => {
                 loading.value = false;
