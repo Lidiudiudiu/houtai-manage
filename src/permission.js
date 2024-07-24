@@ -2,7 +2,6 @@ import router from '~/router'
 import { getcookies } from '~/composables/auth'
 import { toast } from '~/composables/util'
 router.beforeEach((to, from, next) => {
-
     const token = getcookies();
     if (!token && to.path != '/login') {
         toast('请先登录', 'error')
@@ -15,4 +14,5 @@ router.beforeEach((to, from, next) => {
     }
 
     next()
+
 })

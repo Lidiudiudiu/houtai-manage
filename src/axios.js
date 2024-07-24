@@ -10,6 +10,7 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     const token = getcookies()
+    console.log('请求拦截器', token)
     if (token) {
         config.headers['token'] = token
     }
@@ -27,8 +28,9 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    toast(error.response.data.msg, 'error')
 
+    toast(error.response.data.msg, 'error')
+    console.log(error.response.data.msg)
     return Promise.reject(error);
 });
 

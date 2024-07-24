@@ -72,22 +72,25 @@ const rules = {
 
 const formRef = ref(null)
 const loading = ref(false)
-const onSubmit = () => {
-    formRef.value.validate((valid) => {
-        if (!valid) return false;
-        loading.value = true
-        login(form.username, form.password)
-            .then(res => {
-                toast('登录成功')
-                router.push('/')
-                setcookies(res.token)
-            })
-            .finally(() => {
-                loading.value = false;
-            })
-        getinfo().then(res2 => {
-            store.commit("SET_USERINFO", res2)
-        })
-    })
+const onSubmit = async () => {
+    const valid = await formRef.value.validate();
+    if (!valid) return false;
+
+    loading.value = true;
+
+    try {
+        const loginResponse = await login(form.username, form.password);
+        setcookies(loginResponse.token);
+        toast('登录成功');
+        router.push('/');
+
+        const infoResponse = await getinfo();
+        store.commit("SET_USERINFO", infoResponse);
+    } catch (error) {
+        console.error('登录或获取信息失败:', error);
+    } finally {
+        loading.value = false;
+    }
 }
+
 </script>
