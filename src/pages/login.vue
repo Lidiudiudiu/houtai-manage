@@ -46,6 +46,7 @@ import { ref, reactive } from 'vue'
 import { login, getinfo } from '~/api/manager.js'
 import { toast } from '~/composables/util.js'
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import { setcookies } from '~/composables/auth.js';
 
 
@@ -56,7 +57,7 @@ const form = reactive({
 })
 
 const router = useRouter()
-
+const store = useStore()
 const rules = {
     username: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -85,7 +86,7 @@ const onSubmit = () => {
                 loading.value = false;
             })
         getinfo().then(res2 => {
-            console.log(res2)
+            store.commit("SET_USERINFO", res2)
         })
     })
 }
