@@ -43,7 +43,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { login } from '~/api/manager.js'
+import { login, getinfo } from '~/api/manager.js'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router';
 import { useCookies } from '@vueuse/integrations/useCookies';
@@ -81,15 +81,11 @@ const onSubmit = () => {
                     type: 'success',
                 })
                 router.push('/')
-                cookies.set('admin-token', res.data.data.token)
+                cookies.set('admin-token', res.token)
             })
-            .catch(err => {
-
-                ElMessage({
-                    message: err.response.data.msg,
-                    type: 'error',
-                })
-            })
+        getinfo().then(res2 => {
+            console.log(res2)
+        })
     })
 }
 </script>
