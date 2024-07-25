@@ -42,12 +42,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { toast } from '~/composables/util.js'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-
-
 
 // do not use same name with ref
 const form = reactive({
@@ -68,7 +66,6 @@ const rules = {
     ]
 }
 
-
 const formRef = ref(null)
 const loading = ref(false)
 const onSubmit = () => {
@@ -87,4 +84,18 @@ const onSubmit = () => {
 
     })
 }
+
+function onKeyUp(e) {
+    if (e.key == 'Enter') onSubmit()
+}
+
+onMounted(() => {
+    document.addEventListener('keyup', onKeyUp)
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keyup', onKeyUp)
+})
+
+
 </script>
