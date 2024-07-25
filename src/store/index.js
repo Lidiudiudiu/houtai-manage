@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
-import { getinfo } from '~/api/manager.js'
+import { login, getinfo } from '~/api/manager.js'
+import { setcookies } from '~/composables/auth.js';
 // 创建一个新的 store 实例
 const store = createStore({
     state() {
@@ -13,6 +14,14 @@ const store = createStore({
         }
     },
     actions: {
+        login({ commit }, { username, password }) {
+            return new Promise((resolve, reject) => {
+                login(username, password).then(res => {
+                    setcookies(res.token)
+                    resolve(res)
+                }).catch(err => reject(err))
+            })
+        },
         getinfo({ commit }) {
             return new Promise((resolve, reject) => {
                 getinfo().then(res => {

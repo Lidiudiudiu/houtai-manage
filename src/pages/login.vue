@@ -43,11 +43,10 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { login, getinfo } from '~/api/manager.js'
 import { toast } from '~/composables/util.js'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { setcookies } from '~/composables/auth.js';
+
 
 
 // do not use same name with ref
@@ -76,15 +75,15 @@ const onSubmit = () => {
     formRef.value.validate((valid) => {
         if (!valid) return false;
         loading.value = true
-        login(form.username, form.password)
-            .then(res => {
-                toast('登录成功')
-                router.push('/')
-                setcookies(res.token)
-            })
-            .finally(() => {
-                loading.value = false;
-            })
+
+        store.dispatch('login', form).then(res => {
+            toast('登录成功')
+            router.push('/')
+        }).finally(() => {
+            loading.value = false;
+        })
+
+
 
     })
 }
